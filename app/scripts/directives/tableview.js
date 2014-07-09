@@ -22,6 +22,8 @@ angular.module('arwuApp')
         })
 
         var width = scope.width - scope.margin.left - scope.margin.right - 57;
+        var keys = d3.keys(scope.data[0]);
+        keys = keys.slice(0, keys.length - 3);  // remove   filter_country  filter_brush  filter_name
         d3.select("#tablewrapper")
           // .attr("height", 300 + "px")
           // .style("width", scope.width - scope.margin.left - scope.margin.right  + "px");
@@ -29,19 +31,19 @@ angular.module('arwuApp')
           .style("margin-left", scope.margin.left + 28 + "px"); 
 
         d3.selectAll("thead tr").selectAll("th")
-            .data(['Name', 'Country'].concat(scope.dimensions))
+            .data(keys)
             .enter()
             .append("th")
               .style("width", function(d, i) {
+                return calculateCellWidth(d, i);
                 // console.log("Setting style " + i)
-                if (i == 0)
-                  return "290px"
-                else 
-                  if (i == 1)
-                    return "145px"
+                // if (i == 0)
+                //   return "290px"
+                // else 
+                //   if (i == 1)
+                //     return "145px"
 
-                return "30px"
-                // return (width - 300 - 150) / scope.dimensions.length;
+                // return "30px"                
                 // return (scope.width - scope.margin.left - scope.margin.right - 57)/17 + "px"
               })
               .style("border", "1")
@@ -52,8 +54,11 @@ angular.module('arwuApp')
         d3.select("#tablewrapper table")
               .style("width", width - 15 + "px")
 
+        d3.select("#tablediv table")
+              .style("width", width - 15 + "px")
+
         var color = d3.scale.linear()
-            .domain([101, 1])
+            .domain([0, 100])
             .range(["white", "#7BBF6A"]);
 
         function draw() {
@@ -89,39 +94,27 @@ angular.module('arwuApp')
 
           rows.selectAll("td")
             .data(function(d, i) { 
-            var array = [d.name, d.country];
-              scope.dimensions.forEach(function(p) {
-                if (d.data[p] == undefined)
-                  array.push(0);
-                else
-                  array.push(d.data[p]['Current rank'])  
-              })                  
+              var array = [];
+              keys.forEach(function(p) {
+                array.push(d[p])
+              })
               
               return array; 
             })
             .enter()            
             .append("td")                                                   
               .attr("class", function(d, i) {
-                return (i > 1) ? "centeredTd" : null;
+                return (i != 1) ? "centeredTd" : null;
               })
               // .style("font", function(d, i) {
               //   if (i == scope.dimensions.length)
               //     return "italic bold";
               // })
               .style("background-color", function(d, i) {  
-                return (d == 0) ? color(101) : color(d); 
+                return (i > 3) ? color(d) : "white"; 
               })
               .style("width", function(d, i) {
-                // console.log("Setting style " + i)
-                if (i == 0)
-                  return "300px"
-                else 
-                  if (i == 1)
-                    return "150px"
-
-                return "30px"
-                // return (width - 300 - 150) / scope.dimensions.length;
-                // return (scope.width - scope.margin.left - scope.margin.right - 57)/17 + "px"
+                return calculateCellWidth(d, i);
               })
               .style("text-align", function(d, i) {
                 if (i < 2)
@@ -131,8 +124,12 @@ angular.module('arwuApp')
               })
               .text(function(d, i) {
                 return (d == 0) ? "-" : d;
-              })
+              })         
 
+        }
+
+       function calculateCellWidth(d, i) {
+          return (i == 1) ? 200 + 'px' : (width - 200) / d3.keys(scope.data[0]).length + 'px';
         }
       }
     };

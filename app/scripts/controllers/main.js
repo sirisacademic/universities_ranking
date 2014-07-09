@@ -51,6 +51,8 @@ angular.module('arwuApp')
     $scope.width = 960 - $scope.margin.left - $scope.margin.right;
     $scope.height = 420 - $scope.margin.top - $scope.margin.bottom;
     $scope.rankingMetric = 'Current rank'; // the metric to use in the rankings
+    $scope.country_field_name = "Country",
+    $scope.name = "Institution"
 
     // elements are sorted according their position in the ranking in 2014. If they are not on 2014's ranking, they are sorted according their sum of ranks along the rest of the years
     // data.sort(function(a, b) {

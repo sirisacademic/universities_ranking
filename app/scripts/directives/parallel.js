@@ -21,10 +21,14 @@ angular.module('arwuApp')
           draw();
         })
 
+        var name = "Institution"
+
         // highlighted the corresponding element given a datum
         scope.highlightParallel = function(hoveredElelemnt) {          
+          // console.log(scope.name_field_name)
+          // console.log(hoveredElelemnt[scope.name_field_name])
           var selectedElement = foreground.filter(function(d) {
-            return d[name] == hoveredElelemnt.name;
+            return d[name] == hoveredElelemnt[name];
           })
           
           highlightLine(selectedElement.node());
@@ -67,9 +71,7 @@ angular.module('arwuApp')
                     .ticks(0),
             background,
             foreground,
-            strokeWidth = 1.5,  
-            country_field_name = "Country",
-            name = "Institution";
+            strokeWidth = 1.5;
 
         var svg = d3.select(element[0]).append("svg")
             .attr('width', scope.width + scope.margin.left + scope.margin.right)
@@ -101,7 +103,7 @@ angular.module('arwuApp')
           //   countries.push(d);
           //   printBytes(d)
           // })
-          countries = d3.set(data.map(function(d) { return d[country_field_name]; })).values();
+          countries = d3.set(data.map(function(d) { return d[scope.country_field_name]; })).values();
           // countries = d3.keys(set);
 
 
@@ -285,7 +287,7 @@ angular.module('arwuApp')
 
         function filterByCountry() {
           foreground.style("display", function(d) {
-            d.filter_country = (selectedCountry == "All Countries") ? true : d[country_field_name] == selectedCountry;
+            d.filter_country = (selectedCountry == "All Countries") ? true : d[scope.country_field_name] == selectedCountry;
             return (d.filter_country && d.filter_brush  && d.filter_name) ? null : "none";
           });
 
@@ -293,7 +295,7 @@ angular.module('arwuApp')
         }
 
         function checkMultiCountryBS(d) {
-          var cs = d[country_field_name].split('/');
+          var cs = d[$scope.country_field_name].split('/');
           for (var i = 0; i<cs.length; i++)
             cs[i] = cs[i].trim();
 
@@ -350,7 +352,7 @@ angular.module('arwuApp')
           if(!scope.$$phase) scope.$apply();
 
           d3.select("#numResults")
-              .text(scope.activeRows.length + " institutions match the criteria");
+              .text(scope.activeRows.length + " (" + scope.activeRows.length / scope.data.length * 100 + "%) institutions match the criteria");
 
         }
 
