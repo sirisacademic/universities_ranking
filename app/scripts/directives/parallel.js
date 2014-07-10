@@ -375,17 +375,6 @@ angular.module('arwuApp')
               return (d[p] == '') ? '-' : d[p];
             })
         }
-
-         function printBytes(str) {
-          var bytes = [];
-
-          for (var i = 0; i < str.length; ++i)
-          {
-              bytes.push(str.charCodeAt(i));
-          }
-
-          console.log(bytes);
-        }
       }
     };
   });

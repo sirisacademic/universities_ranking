@@ -97,6 +97,7 @@ angular.module('arwuApp')
               var array = [];
               keys.forEach(function(p) {
                 array.push(d[p])
+                // console.log(p)
               })
               
               return array; 
@@ -117,10 +118,7 @@ angular.module('arwuApp')
                 return calculateCellWidth(d, i);
               })
               .style("text-align", function(d, i) {
-                if (i < 2)
-                  return null;
-                
-                return "center";
+                return (i != 1) ? "center" : null;
               })
               .text(function(d, i) {
                 return (d == 0) ? "-" : d;
