@@ -56,7 +56,8 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.app %>/data/{,*/}*.{csv,txt,json}'
         ]
       }
     },
@@ -159,7 +160,8 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/scripts/{,*/}*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/styles/fonts/*'
+            '<%= yeoman.dist %>/styles/fonts/*',
+            '<%= yeoman.dist %>/data/{,*/}*.{csv,txt,json}'
           ]
         }
       }
@@ -207,6 +209,17 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>/images',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
           dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
+
+    inputfilesmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/data',
+          src: '{,*/}*.{csv,txt,json}',
+          dest: '<%= yeoman.dist %>/data'
         }]
       }
     },
@@ -274,7 +287,8 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'fonts/*'
+            'fonts/*',
+            'data/{,*}*.{csv}'
           ]
         }, {
           expand: true,
@@ -302,7 +316,8 @@ module.exports = function (grunt) {
       dist: [
         'copy:styles',
         'imagemin',
-        'svgmin'
+        'svgmin',
+        'inputfilesmin'
       ]
     },
 
