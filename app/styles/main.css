@@ -206,7 +206,8 @@ tr {
 #tablediv {
   /*padding-top: 10px;*/
   height: 300px;
-  overflow: scroll;
+  overflow: -moz-scrollbars-vertical; 
+  overflow-y: scroll;
   overflow-x:hidden;
 }
 
