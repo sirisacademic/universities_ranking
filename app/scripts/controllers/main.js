@@ -6,7 +6,7 @@ angular.module('arwuApp')
     // $scope.dimensions = d3.range(2000,2015);
     $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
 
-    console.dir(data);
+    // console.dir(data);
 
     data.forEach(function(d) {
       d.filter_country = true;
