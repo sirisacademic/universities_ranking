@@ -25,18 +25,6 @@ angular.module('arwuApp')
       // })
     })
 
-    $scope.avgs = {};
-    // d3.max(d3.values(d.data).map(function(p) {    
-    //                                           return (p['Weighted salary (US$)'] == undefined) ? 0 : p['Weighted salary (US$)'];
-    //                                         })
-
-    $scope.maxs = {};
-    $scope.maxs['Weighted salary (US$)']      = getMaxValueFromMetric('Weighted salary (US$)');
-    $scope.maxs['Salary percentage increase'] = getMaxValueFromMetric('Salary percentage increase');
-    $scope.maxs['International faculty (%)']  = getMaxValueFromMetric('International faculty (%)');
-    $scope.maxs['International students (%)'] = getMaxValueFromMetric('International students (%)');
-    $scope.maxs['Women faculty (%)']          = getMaxValueFromMetric('Women faculty (%)');
-    $scope.maxs['Women students (%)']         = getMaxValueFromMetric('Women students (%)');
 
     function getMaxValueFromMetric(metric) {
       return d3.max(data, function(d) {
