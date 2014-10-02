@@ -12,6 +12,8 @@ angular.module('arwuApp')
       d.filter_country = true;
       d.filter_brush = true;
       d.filter_name = true;
+      d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
+      d.Country = d.Country.replace(/([a-z])([A-Z])/g, '$1 $2');
 
       // console.dir(d)
       // $scope.dimensions.forEach(function(p) {
