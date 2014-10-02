@@ -211,6 +211,13 @@ tr {
   overflow-x:hidden;
 }
 
+.compareground path {
+  fill: none;
+  stroke: black;
+  stroke-width: 3;
+  stroke-opacity: .7;  
+}
+
 /*.centeredTd {
     text-align:center; 
     vertical-align:middle;

@@ -161,6 +161,9 @@ angular.module('arwuApp')
                   scope.tooltip
                       .html("<font size='2'>" + d["Institution"] + "</font>")
                       .style("visibility", "visible");
+
+                  // d3.select('.compareground')
+                  //   .style('visibility', 'visible');
                   
                   try {
                     scope.highlightLineChart(d);
@@ -222,6 +225,26 @@ angular.module('arwuApp')
               //         .attr("visibility", null);
               //   }));
 
+          var fakeData = [{
+            'Citations': "65.9",
+            'Country': "Fake",
+            'Industry Income': "30",
+            'Institution': "Fake!!!",
+            'International Outlook': "36",
+            'Overal Score': "44.8",
+            'Research': "26.3",
+            'Teaching': "45.6"
+          }];
+
+          // var compareline = svg.append("svg:g")
+          //     .attr("class", "compareground")
+          //   .selectAll("path")
+          //   .data(fakeData)
+          //   .enter().append("svg:path")
+          //     .attr("d", path)
+          //     .attr('stroke-dasharray', '10,10');
+
+
           // Add an axis and title.
           g.append("svg:g")
               .attr("class", "axis")
@@ -281,6 +304,7 @@ angular.module('arwuApp')
 
         // Returns the path for a given data point.
         function path(d) {
+          console.log(d)
           // return line(scope.dimensions.map(function(p) { return [position(p), y[p](getValue(d, p))]; }));          
           return line(scope.dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));          
         }
