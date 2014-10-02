@@ -186,10 +186,17 @@ body {
 /*** TABLE STYLING ***/
 table {  
   /*padding-bottom: 30px;*/  
-  font-size: 10px;
+  font-size: 11px;
   color: #111;
   table-layout:fixed;
   margin-bottom: 0px;
+  border: solid 1px #aaa; 
+  border-collapse: collapse;
+}
+
+th {
+  cursor: hand;
+  border: solid 1px #aaa; 
 }
 
 tr {
@@ -198,6 +205,9 @@ tr {
    height: 25px;
 }
 
+td {
+  padding: 5px;
+}
 
 #tablewapper {
   padding-top: 10px;
