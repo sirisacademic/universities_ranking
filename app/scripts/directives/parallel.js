@@ -387,7 +387,7 @@ angular.module('arwuApp')
 
           circles.selectAll("text")
             .text(function(p) {
-              return (d[p] == '') ? '-' : d[p];
+              return (d[p] == 0) ? '-' : d[p];
             })
         }
       }
