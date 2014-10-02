@@ -190,13 +190,13 @@ table {
   color: #111;
   table-layout:fixed;
   margin-bottom: 0px;
-  border: solid 1px #aaa; 
+  border: solid 1px #bbb; 
   border-collapse: collapse;
 }
 
 th {
   cursor: hand;
-  border: solid 1px #aaa; 
+  border: solid 1px #bbb; 
 }
 
 tr {
