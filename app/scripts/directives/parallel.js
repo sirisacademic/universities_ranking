@@ -164,11 +164,7 @@ angular.module('arwuApp')
 
                   // d3.select('.compareground')
                   //   .style('visibility', 'visible');
-                  
-                  try {
-                    scope.highlightLineChart(d);
-                  } catch(err) {                    
-                  }
+                
 
                   highlightLine(this);
               })
@@ -182,12 +178,7 @@ angular.module('arwuApp')
                     .style("stroke", "steelblue")
                     .style('stroke-width', strokeWidth);
                 d3.selectAll(".circleText")
-                      .attr("display", "none")
-
-                try {
-                  scope.unHighlightLineChart();
-                } catch(err) {                    
-                }                
+                      .attr("display", "none")             
               });
 
           // Add a group element for each dimension.
