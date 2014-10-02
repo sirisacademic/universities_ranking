@@ -4,7 +4,7 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, data) {    
     // Extract the list of scope.dimensions and create a scale for each.
     // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
-    $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Industry Income', 'International Outlook', 'Overal Score'];
+    $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
 
     console.dir(data);
 
