@@ -225,7 +225,7 @@ td {
 
 .compareground path {
   fill: none;
-  stroke: red;
+  stroke: black;
   stroke-width: 2;
   stroke-opacity: .7;  
 }
