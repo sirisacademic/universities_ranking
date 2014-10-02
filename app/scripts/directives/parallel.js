@@ -162,12 +162,18 @@ angular.module('arwuApp')
                       .html("<font size='2'>" + d["Rank 2014-15"] + ". " + d["Institution"] + "</font>")
                       .style("visibility", "visible");
 
-                  console.log(svg.selectAll(".compareground"))
+                  // retrieve values from last year
+                  var old_values = scope.old_data.filter(function(p) {
+                    return p.Institution == d.Institution;
+                  })
+                  console.log(old_values)
+
+                  // show last year's line
                   svg.selectAll(".compareground")
-                    .data(fakeData)
+                    .data(old_values)
                     .append("svg:path")
                       .attr("d", path)
-                      .attr('stroke-dasharray', '10,10')
+                      .attr('stroke-dasharray', '2,3')
                       .style('visibility', 'visible');
                 
 
@@ -305,7 +311,6 @@ angular.module('arwuApp')
 
         // Returns the path for a given data point.
         function path(d) {
-          console.log(d)
           // return line(scope.dimensions.map(function(p) { return [position(p), y[p](getValue(d, p))]; }));          
           return line(scope.dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));          
         }

@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('arwuApp')
-  .controller('MainCtrl', function ($scope, $compile, data) {    
+  .controller('MainCtrl', function ($scope, $compile, $http, data) {    
     // Extract the list of scope.dimensions and create a scale for each.
     // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
     $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
+
+    $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
+      $scope.old_data = d3.csv.parse(response.data);
+    });
 
     console.dir(data);
 
@@ -12,6 +16,8 @@ angular.module('arwuApp')
       d.filter_country = true;
       d.filter_brush = true;
       d.filter_name = true;
+
+      // adding spaces to names 
       d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
       d.Country = d.Country.replace(/([a-z])([A-Z])/g, '$1 $2');
 
