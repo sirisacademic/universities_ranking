@@ -181,7 +181,7 @@ angular.module('arwuApp')
               })
               .on("mousemove", function(){
                 // d3.event must be used to retrieve pageY and pageX. While this is not needed in Chrome, it is needed in Firefox
-                scope.tooltip.style("top", (d3.event.pageY - 20)+"px").style("left",(d3.event.pageX )+"px");        
+                scope.tooltip.style("top", (d3.event.pageY - 20)+"px").style("left",(d3.event.pageX + 5)+"px");        
               })
               .on("mouseout", function(){
                 scope.tooltip.style("visibility", "hidden");
