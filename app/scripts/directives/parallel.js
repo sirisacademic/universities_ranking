@@ -376,7 +376,7 @@ angular.module('arwuApp')
           if(!scope.$$phase) scope.$apply();
 
           d3.select("#numResults")
-              .text(scope.activeRows.length + " (" + scope.activeRows.length / scope.data.length * 100 + "%) institutions match the criteria");
+              .text(scope.activeRows.length + " (" + (scope.activeRows.length / scope.data.length * 100).toFixed(1) + "%) institutions match the criteria");
 
         }
 
