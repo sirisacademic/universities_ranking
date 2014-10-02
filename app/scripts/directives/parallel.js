@@ -162,8 +162,13 @@ angular.module('arwuApp')
                       .html("<font size='2'>" + d["Rank 2014-15"] + ". " + d["Institution"] + "</font>")
                       .style("visibility", "visible");
 
-                  // d3.select('.compareground')
-                  //   .style('visibility', 'visible');
+                  console.log(svg.selectAll(".compareground"))
+                  svg.selectAll(".compareground")
+                    .data(fakeData)
+                    .append("svg:path")
+                      .attr("d", path)
+                      .attr('stroke-dasharray', '10,10')
+                      .style('visibility', 'visible');
                 
 
                   highlightLine(this);
@@ -178,7 +183,11 @@ angular.module('arwuApp')
                     .style("stroke", "steelblue")
                     .style('stroke-width', strokeWidth);
                 d3.selectAll(".circleText")
-                      .attr("display", "none")             
+                      .attr("display", "none");
+
+                svg.selectAll(".compareground")
+                  .selectAll("path")
+                  .style('visibility', 'hidden'); 
               });
 
           // Add a group element for each dimension.
@@ -219,16 +228,17 @@ angular.module('arwuApp')
           var fakeData = [{
             'Citations': "65.9",
             'Country': "Fake",
-            'Industry Income': "30",
+            'Ind. Income': "30",
             'Institution': "Fake!!!",
-            'International Outlook': "36",
-            'Overal Score': "44.8",
+            'Int. Outlook': "36",
+            'Overall Score': "44.8",
             'Research': "26.3",
             'Teaching': "45.6"
           }];
 
-          // var compareline = svg.append("svg:g")
-          //     .attr("class", "compareground")
+          var compareline = svg.append("svg:g")
+              .attr("class", "compareground")
+              .append("svg:path");
           //   .selectAll("path")
           //   .data(fakeData)
           //   .enter().append("svg:path")
