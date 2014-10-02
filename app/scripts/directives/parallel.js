@@ -159,7 +159,7 @@ angular.module('arwuApp')
               })
             .on("mouseover", function(d) {
                   scope.tooltip
-                      .html("<font size='2'>" + d["Rank 2014-15"] + ". " + d["Institution"] + "</font>")
+                      .html("<font size='2'>" + d["Rank 2013-14"] + ". " + d["Institution"] + "</font>")
                       .style("visibility", "visible");
 
                   // // retrieve values from last year
