@@ -19,7 +19,10 @@ angular.module('arwuApp')
         scope.$watch('data', function() {
           data = scope.data;
           draw();
-        })
+        });
+
+        var color = d3.scale.category10()
+                      .domain([1, 4]);
 
         var name = "Institution"
 
@@ -35,7 +38,7 @@ angular.module('arwuApp')
         }
 
         scope.unHighlightParallel = function() {
-          foreground.style("stroke", "steelblue");
+          foreground.style("stroke", function(d) { return color(+d['3-clusters']); });
           d3.selectAll(".circleText")
                 .attr("display", "none");
 
@@ -138,9 +141,9 @@ angular.module('arwuApp')
                 .range([scope.height, 0]);
           })     
 
-          var nElements = data.length,
+          var nElements = data.length;
               // strokeWidth = (scope.height / nElements) * 0.8;
-              color = d3.scale.category20();
+              
 
           // Add grey background lines for context.
           background = svg.append("svg:g")
@@ -158,9 +161,7 @@ angular.module('arwuApp')
             .enter().append("svg:path")
               .attr("d", path)
               .attr("stroke-width", strokeWidth + 'px')
-              .attr("stroke", function(d) {
-                return color(d);
-              })
+              .attr("stroke", function(d) { return color(+d['3-clusters']); })
             .on("mouseover", function(d) {
                   scope.tooltip
                       .html("<font size='2'>" + d["Rank 2014-15"] + ". " + d["Institution"] + "</font>")
@@ -168,14 +169,16 @@ angular.module('arwuApp')
 
                   highlightLine(this);
               })
-              .on("mousemove", function(){
+              .on("mousemove", function(d){
                 // d3.event must be used to retrieve pageY and pageX. While this is not needed in Chrome, it is needed in Firefox
                 scope.tooltip.style("top", (d3.event.pageY - 20)+"px").style("left",(d3.event.pageX + 5)+"px");        
               })
-              .on("mouseout", function(){
+              .on("mouseout", function(d){
                 scope.tooltip.style("visibility", "hidden");
                 d3.select(this)
-                    .style("stroke", "steelblue")
+                    .style("stroke", function(d) {
+                      return color(+d['3-clusters']);
+                    })
                     .style('stroke-width', strokeWidth);
                 d3.selectAll(".circleText")
                       .attr("display", "none");
