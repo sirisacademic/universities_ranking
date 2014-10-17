@@ -21,14 +21,12 @@ angular.module('arwuApp')
           draw();
         })
 
-        var name = "Institution"
-
         // highlighted the corresponding element given a datum
         scope.highlightParallel = function(hoveredElelemnt) {          
           // console.log(scope.name_field_name)
           // console.log(hoveredElelemnt[scope.name_field_name])
           var selectedElement = foreground.filter(function(d) {
-            return d[name] == hoveredElelemnt[name];
+            return d[scope.name] == hoveredElelemnt[scope.name];
           })
           
           highlightLine(selectedElement.node());
@@ -154,16 +152,14 @@ angular.module('arwuApp')
           foreground = svg.append("svg:g")
               .attr("class", "foreground")
             .selectAll("path")
-              .data(data, function(d) { return d[name]; })
+              .data(data, function(d) { return d[scope.name]; })
             .enter().append("svg:path")
               .attr("d", path)
               .attr("stroke-width", strokeWidth + 'px')
-              .attr("stroke", function(d) {
-                return color(d);
-              })
+              .attr("stroke", function(d) { return color(d); })
             .on("mouseover", function(d) {
                   scope.tooltip
-                      .html("<font size='2'>" + d["Rank 2014-15"] + ". " + d["Institution"] + "</font>")
+                      .html("<font size='2'>" + d.position + ". " + d.name + "</font>")
                       .style("visibility", "visible");                  
 
                   highlightLine(this);
@@ -220,25 +216,10 @@ angular.module('arwuApp')
               //         .attr("visibility", null);
               //   }));
 
-          var fakeData = [{
-            'Citations': "65.9",
-            'Country': "Fake",
-            'Ind. Income': "30",
-            'Institution': "Fake!!!",
-            'Int. Outlook': "36",
-            'Overall Score': "44.8",
-            'Research': "26.3",
-            'Teaching': "45.6"
-          }];
-
-          var compareline = svg.append("svg:g")
-              .attr("class", "compareground")
-              .append("svg:path");
-          //   .selectAll("path")
-          //   .data(fakeData)
-          //   .enter().append("svg:path")
-          //     .attr("d", path)
-          //     .attr('stroke-dasharray', '10,10');
+          // dotted line to compare with values from previous year
+          // var compareline = svg.append("svg:g")
+          //     .attr("class", "compareground")
+          //     .append("svg:path");
 
 
           // Add an axis and title.
@@ -323,7 +304,7 @@ angular.module('arwuApp')
 
         function filterByName() {  
           foreground.style("display", function(d) {
-            d.filter_name = d[name].toLowerCase().indexOf(filterText) > -1;
+            d.filter_name = d[scope.name].toLowerCase().indexOf(filterText) > -1;
 
             return (d.filter_country && d.filter_brush  && d.filter_name) ? null : "none";
           });
@@ -391,22 +372,22 @@ angular.module('arwuApp')
 
           circles.selectAll("text")
             .text(function(p) {
-              return (d[p] == 0) ? '-' : d[p];
+              return (d[p] == -1) ? '-' : d[p];
             });
 
           // retrieve values from last year
-          var old_values = scope.old_data.filter(function(p) {
-            return p.Institution == d.Institution;
-          })
-          console.log(old_values)
+          // var old_values = scope.old_data.filter(function(p) {
+          //   return p.Institution == d.Institution;
+          // })
+          // console.log(old_values)
 
           // show last year's line
-          svg.selectAll(".compareground")
-            .data(old_values)
-            .append("svg:path")
-              .attr("d", path)
-              .attr('stroke-dasharray', '2,3')
-              .style('visibility', 'visible');
+          // svg.selectAll(".compareground")
+          //   .data(old_values)
+          //   .append("svg:path")
+          //     .attr("d", path)
+          //     .attr('stroke-dasharray', '2,3')
+          //     .style('visibility', 'visible');
         }
       }
     };
