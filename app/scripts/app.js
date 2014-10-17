@@ -12,7 +12,7 @@ angular
         controller: 'MainCtrl',
         resolve: {
           data: ['$http', function($http) {
-            return $http.get('data/the_ranking_2014-2015.csv').then(function(response) {
+            return $http.get('data/migliori_universita_italiane.csv').then(function(response) {
               // console.log(response.data)
               return d3.csv.parse(response.data);
             })

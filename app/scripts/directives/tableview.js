@@ -23,6 +23,7 @@ angular.module('arwuApp')
 
         var width = scope.width - scope.margin.left - scope.margin.right - 57;
         var keys = d3.keys(scope.data[0]);
+        console.log(keys)
         keys = keys.slice(0, keys.length - 3);  // remove   filter_country  filter_brush  filter_name
         d3.select("#tablewrapper")
           // .attr("height", 300 + "px")
@@ -127,7 +128,7 @@ angular.module('arwuApp')
         }
 
        function calculateCellWidth(d, i) {
-          return (i == 1) ? 200 + 'px' : (width - 200) / d3.keys(scope.data[0]).length + 'px';
+          return (i == 1) ? 130 + 'px' : (width - 200) / d3.keys(scope.data[0]).length + 'px';
         }
       }
     };

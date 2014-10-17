@@ -4,13 +4,19 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, $http, data) {    
     // Extract the list of scope.dimensions and create a scale for each.
     // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
-    $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
-
-    $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
-      $scope.old_data = d3.csv.parse(response.data);
-    });
+    $scope.dimensions = ['Attrattività','Sostenibilità','Stage','Mobilità','Borse di studio','Dispersione','Efficacia','Soddisfatti','Ricerca','Fondi Esterni','Alta Formazione','Occupazione'];
+    // $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
+    //   $scope.old_data = d3.csv.parse(response.data);
+    // });
 
     console.dir(data);
+
+        // Set proper margins, width and height
+    $scope.margin             = { top: 30, right: 0, bottom: 10, left: 0 };
+    $scope.width              = 1200 - $scope.margin.left - $scope.margin.right;
+    $scope.height             = 420 - $scope.margin.top - $scope.margin.bottom;
+    $scope.country_field_name = "Country",
+    $scope.name               = "name"
 
     data.forEach(function(d) {
       d.filter_country = true;
@@ -18,8 +24,9 @@ angular.module('arwuApp')
       d.filter_name = true;
 
       // adding spaces to names 
-      d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
-      d.Country = d.Country.replace(/([a-z])([A-Z])/g, '$1 $2');
+      // d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
+      // d.Country = d.Country.replace(/([a-z])([A-Z])/g, '$1 $2');
+      // d[$scope.country_field_name] = 'Italia';
 
       // console.dir(d)
       // $scope.dimensions.forEach(function(p) {
@@ -42,12 +49,7 @@ angular.module('arwuApp')
         });
     }
 
-    // Set proper margins, width and height
-    $scope.margin = { top: 30, right: 0, bottom: 10, left: 0 };
-    $scope.width = 960 - $scope.margin.left - $scope.margin.right;
-    $scope.height = 420 - $scope.margin.top - $scope.margin.bottom;
-    $scope.country_field_name = "Country",
-    $scope.name               = "Institution"
+           
 
     // elements are sorted according their position in the ranking in 2014. If they are not on 2014's ranking, they are sorted according their sum of ranks along the rest of the years
     // data.sort(function(a, b) {
