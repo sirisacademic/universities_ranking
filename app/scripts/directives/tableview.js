@@ -23,8 +23,8 @@ angular.module('arwuApp')
 
         var width = scope.width - scope.margin.left - scope.margin.right - 57;
         var keys = d3.keys(scope.data[0]);
-        console.log(keys)
-        keys = keys.slice(0, keys.length - 3);  // remove   filter_country  filter_brush  filter_name
+        // console.log(keys)
+        keys = keys.slice(0, keys.length - 4);  // remove   filter_country  filter_brush  filter_name
         d3.select("#tablewrapper")
           // .attr("height", 300 + "px")
           // .style("width", scope.width - scope.margin.left - scope.margin.right  + "px");
@@ -122,7 +122,7 @@ angular.module('arwuApp')
                 return (i != 1) ? "center" : null;
               })
               .text(function(d, i) {
-                return (d == 0) ? "-" : d;
+                return (d == -1) ? "-" : d;
               })         
 
         }

@@ -33,7 +33,7 @@ angular.module('arwuApp')
         }
 
         scope.unHighlightParallel = function() {
-          foreground.style("stroke", "steelblue");
+          foreground.style("stroke", function(d) { return d.statal ? "#8b8f88": "steelblue"});
           d3.selectAll(".circleText")
                 .attr("display", "none");
 
@@ -138,7 +138,7 @@ angular.module('arwuApp')
 
           var nElements = data.length,
               // strokeWidth = (scope.height / nElements) * 0.8;
-              color = d3.scale.category20();
+              // color = d3.scale.category20();
 
           // Add grey background lines for context.
           background = svg.append("svg:g")
@@ -156,10 +156,12 @@ angular.module('arwuApp')
             .enter().append("svg:path")
               .attr("d", path)
               .attr("stroke-width", strokeWidth + 'px')
-              .attr("stroke", function(d) { return color(d); })
+              .attr("stroke", function(d) { 
+                return d.statal ? "#8b8f88": "steelblue"})
             .on("mouseover", function(d) {
+                  var statal = d.statal ? "statal" : "non-statal";
                   scope.tooltip
-                      .html("<font size='2'>" + d.position + ". " + d.name + "</font>")
+                      .html("<font size='2'>" + d.position + " (" + statal + "). " + d.name + "</font>")
                       .style("visibility", "visible");                  
 
                   highlightLine(this);
@@ -171,7 +173,7 @@ angular.module('arwuApp')
               .on("mouseout", function(){
                 scope.tooltip.style("visibility", "hidden");
                 d3.select(this)
-                    .style("stroke", "steelblue")
+                    .style("stroke", function(d) { return d.statal ? "#8b8f88": "steelblue"})
                     .style('stroke-width', strokeWidth);
                 d3.selectAll(".circleText")
                       .attr("display", "none");

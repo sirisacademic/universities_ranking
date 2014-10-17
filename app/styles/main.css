@@ -143,7 +143,7 @@ body {
 
 .line {
   fill: none;
-  stroke: steelblue;
+  /*stroke: steelblue;*/
   stroke-width: 1px;
 }
 
@@ -234,3 +234,13 @@ td {
     text-align:center; 
     vertical-align:middle;
 }*/
+li {
+    list-style-type: none;
+}
+
+#item1 {
+  background-color: #8b8f88;
+}
+#item2 {
+  background-color: steelblue;
+}

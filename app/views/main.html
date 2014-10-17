@@ -2,7 +2,7 @@
   <h3 class="text-muted">Business Schools Explorer</h3>
 </div> -->
 <div class="row">
-  <div class="col-xs-11"> <h3>Classifiche Università <small>2014</small></h3></div>
+  <div class="col-xs-11"> <h3>Classifica delle università italiane 2014 <small>Il Sole 24 ore</small></h3></div>
   <div class="col-xs-1 align-right"><a href="http://www.sirislab.com/tools"><img id="logo" src="images/logo_sirislab.png"></img></a></div>
 </div>
 
@@ -19,7 +19,12 @@
     <select class="combobox" id="countriesCombo">
       <option value="All" selected>All</option>
     </select> -->
-
+  <div id="legend">
+    <ul>
+      <li><span id="item1">&nbsp&nbsp&nbsp&nbsp&nbsp</span>&nbspStatal universities</li>
+      <li><span id="item2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>&nbspNon-statal universities</li>
+    </ul>
+  </div>
   </div>
   <div class="col-xs-4 col-centered">
     <button type="submit" class="btn btn-default btn-sm center-block" id="clearBrushesBtn" style="width:180px" disabled>Clear all filters</button>    
@@ -34,9 +39,9 @@
 <div class="row">  
   <parallel></parallel>
 </div>
-<div class="row" style="padding:5px 0 15px 80px">
+<!-- <div class="row" style="padding:5px 0 15px 80px">
   <img src="images/chart-parallel-legend.png">
-</div>
+</div> -->
 
 <div class="row">  
   <div class="panel-heading" id="numResults"></div>    

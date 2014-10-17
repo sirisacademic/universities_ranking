@@ -4,12 +4,12 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, $http, data) {    
     // Extract the list of scope.dimensions and create a scale for each.
     // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
-    $scope.dimensions = ['Attrattività','Sostenibilità','Stage','Mobilità','Borse di studio','Dispersione','Efficacia','Soddisfatti','Ricerca','Fondi Esterni','Alta Formazione','Occupazione'];
+    $scope.dimensions = ['Attrattività','Stage','Mobilità','Sostenibilità','Borse di studio','Dispersione','Efficacia','Soddisfatti','Occupazione','Ricerca','Fondi Esterni','Alta Formazione','Punteggio finale'];
     // $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
     //   $scope.old_data = d3.csv.parse(response.data);
     // });
 
-    console.dir(data);
+    // console.dir(data);
 
         // Set proper margins, width and height
     $scope.margin             = { top: 30, right: 0, bottom: 10, left: 0 };
@@ -22,6 +22,7 @@ angular.module('arwuApp')
       d.filter_country = true;
       d.filter_brush = true;
       d.filter_name = true;
+      d.statal = (d.statal == "yes") ? true : false;
 
       // adding spaces to names 
       // d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
