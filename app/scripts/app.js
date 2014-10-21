@@ -2,6 +2,8 @@
 
 angular
   .module('arwuApp', [
+    'sirislab.siris-tableview',
+    'sirislab.siris-stringUtils',
     'ngResource',
     'ngRoute'
   ])

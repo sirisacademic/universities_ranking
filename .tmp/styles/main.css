@@ -1,10 +1,12 @@
 /* Space out content a bit */
+
 body {
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
+
 .header,
 .marketing,
 .footer {
@@ -13,10 +15,13 @@ body {
 }
 
 /* Custom page header */
+
 .header {
   border-bottom: 1px solid #e5e5e5;
 }
+
 /* Make the masthead heading the same height as the navigation */
+
 .header h3 {
   margin-top: 0;
   margin-bottom: 0;
@@ -25,6 +30,7 @@ body {
 }
 
 /* Custom page footer */
+
 .footer {
   padding-top: 19px;
   color: #777;
@@ -32,47 +38,59 @@ body {
 }
 
 /* Customize container */
+
 @media (min-width: 768px) {
   .container {
     max-width: 960px;
   }
 }
+
 .container-narrow > hr {
   margin: 30px 0;
 }
 
 /* Main marketing message and sign up button */
+
 .jumbotron {
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 }
+
 .jumbotron .btn {
   font-size: 21px;
   padding: 14px 24px;
 }
 
 /* Supporting marketing content */
+
 .marketing {
   margin: 40px 0;
 }
+
 .marketing p + h4 {
   margin-top: 28px;
 }
 
 /* Responsive: Portrait tablets and up */
+
 @media screen and (min-width: 960px) {
   /* Remove the padding we set earlier */
+
   .header,
   .marketing,
   .footer {
     padding-left: 0;
     padding-right: 0;
   }
+
   /* Space out the masthead */
+
   .header {
     margin-bottom: 30px;
   }
+
   /* Remove the bottom border on the jumbotron for visual effect */
+
   .jumbotron {
     border-bottom: 0;
   }
@@ -88,7 +106,7 @@ body {
 .foreground path {
   fill: none;
   /*stroke: steelblue;*/
-  stroke-opacity: .7;  
+  stroke-opacity: .7;
 }
 
 .active {
@@ -103,7 +121,8 @@ body {
   shape-rendering: crispEdges;
 }
 
-.axis line, .axis path {
+.axis line,
+.axis path {
   fill: none;
   stroke: #ccc;
   shape-rendering: crispEdges;
@@ -154,43 +173,42 @@ body {
 }
 
 /**** Bootstrap patches *******/
-.nav, .pagination, .carousel a {
-  cursor: pointer;
- }
 
- a {
+.nav,
+.pagination,
+.carousel a {
   cursor: pointer;
- }
+}
 
-/*#mag_glass {
+a {
   cursor: pointer;
- }*/
+}
 
 .btn-gray {
-    background-color: #ebebeb
+  background-color: #ebebeb;
 }
 
 .scrollable-menu {
-    height: auto;
-    max-height: 400px;
-    overflow-x: hidden;
+  height: auto;
+  max-height: 400px;
+  overflow-x: hidden;
 }
 
 .dropdown-menu a {
-    font: 12px sans-serif;
+  font: 12px sans-serif;
 }
 
 .highlighted-row tr {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
-
 /*** TABLE STYLING ***/
-table {  
-  /*padding-bottom: 30px;*/  
+
+table {
+  /*padding-bottom: 30px;*/
   font-size: 11px;
   color: #111;
-  table-layout:fixed;
+  table-layout: fixed;
   margin-bottom: 0px;
   /*border: solid 1px #bbb; */
   border-collapse: collapse;
@@ -198,13 +216,13 @@ table {
 
 th {
   cursor: hand;
-  border: solid 1px #bbb; 
+  border: solid 1px #bbb;
 }
 
 tr {
-   line-height: 25px;
-   min-height: 25px;
-   height: 25px;
+  line-height: 25px;
+  min-height: 25px;
+  height: 25px;
 }
 
 td {
@@ -218,25 +236,18 @@ td {
 #tablediv {
   /*padding-top: 10px;*/
   height: 300px;
-  overflow: -moz-scrollbars-vertical; 
+  overflow: -moz-scrollbars-vertical;
   overflow-y: scroll;
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
 
 .compareground path {
   fill: none;
   stroke: black;
   stroke-width: 2;
-  stroke-opacity: .7;  
+  stroke-opacity: .7;
 }
-
 
 .instructions {
   margin-bottom: 25px;
 }
-
-
-/*.centeredTd {
-    text-align:center; 
-    vertical-align:middle;
-}*/

@@ -8,14 +8,19 @@
     <title>THE Ranking Explorer 2014-2015</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/siris-tableview/tableview.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/siris-base.css">
     <!-- endbuild -->
   </head>
   <body ng-app="arwuApp">
@@ -23,8 +28,38 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <!-- header -->
+    <div class="navbar navbar-default navbar-fixed-top header-bar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand" href="#">THE Ranking Explorer 2014 - 2015</span>
+        </div> 
+        <div class="navbar-collapse collapse">
+          <div class="nav navbar-nav navbar-right lab-logo">
+            <a href="http://wwww.sirislab.com/tools">
+              <img src="images/logo_sirislab-white-h100.png">
+            </a>
+        </div>      
+        </div>
+      </div>
+    </div>
+
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div style="margin-top:60px" ng-view=""></div>
+
+    <!-- footer -->
+    <div class="footer" style="margin-top:20px">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <a href="http://www.sirisacademic.com" target="_blank">Powered by Siris Academic</a>
+            <a href="https://github.com/sirisacademic/universities_ranking" target="_blank"><img class="git-mark" src="images/GitHub-Mark-32px.png" alt="Fork in Github"></img></a>
+          </div>          
+        </div>
+      </div>
+    </div>
+
+
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -58,7 +93,9 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/directives/parallel.js"></script>
-        <script src="scripts/directives/tableview.js"></script>
+        <script src="bower_components/siris-tableview/tableview.js"></script>
+        <script src="bower_components/siris-browserService/browserService.js"></script>
+        <script src="bower_components/siris-stringUtils/stringUtils.js"></script>
         <!-- endbuild -->
 </body>
 </html>

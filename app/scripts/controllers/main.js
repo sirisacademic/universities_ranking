@@ -1,7 +1,30 @@
 'use strict';
 
 angular.module('arwuApp')
-  .controller('MainCtrl', function ($scope, $compile, $http, data) {    
+  .controller('MainCtrl', function ($scope, $compile, $http, data, $StringUtils) {    
+
+     //setup some global constants
+    $scope.$root.TABLE_COLUMN_RANK20142015 = "Rank 2014-15";
+    $scope.$root.TABLE_COLUMN_INSTITUTION = "Institution";
+    $scope.$root.TABLE_COLUMN_COUNTRY = "Country";
+    $scope.$root.TABLE_COLUMN_TEACHING = "Teaching";
+    $scope.$root.TABLE_COLUMN_RESEARCH = "Research";
+    $scope.$root.TABLE_COLUMN_CITATIONS = "Citations";
+    $scope.$root.TABLE_COLUMN_IND_INCOME = "Ind. Income";
+    $scope.$root.TABLE_COLUMN_IND_OUTLOOK = "Int. Outlook";
+    $scope.$root.TABLE_COLUMN_OVERALLSCORE = "Overall Score";
+
+
+    $scope.$root.COLUMN_PROPERTIES = new ColumnsProperties();    
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_RANK20142015,0, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_INSTITUTION,0, 22, "left"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_COUNTRY,0, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_TEACHING,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_RESEARCH,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_CITATIONS,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_IND_OUTLOOK,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_OVERALLSCORE,1, undefined, "center"));
+    
     // Extract the list of scope.dimensions and create a scale for each.
     // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
     $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
@@ -9,8 +32,6 @@ angular.module('arwuApp')
     $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
       $scope.old_data = d3.csv.parse(response.data);
     });
-
-    console.dir(data);
 
     data.forEach(function(d) {
       d.filter_country = true;
@@ -65,6 +86,32 @@ angular.module('arwuApp')
     //   return aValue - bValue;
     // })    
     
+
+
+    //filter data for the table, just the necessary columns
+      var cloneWithProps = function(object, keys)
+      {
+        var newObject = {};
+        keys.forEach(function(key)
+        {
+          newObject[key] = object[key];
+        });
+        return newObject;
+      }
+
+      $scope.table_data = data.map( function(node)
+        {
+          //the headers used for the table will be the properties to extract from the objects in the data
+          return cloneWithProps(node, $scope.$root.COLUMN_PROPERTIES.columns.map(
+              function(columnProperty)
+              {
+                return columnProperty.header;
+              }
+            ));
+        });
+
+
+
     // saving the loaded data into the scope so the directives can draw it
     $scope.data = data;    
 

@@ -1,0 +1,50 @@
+@color-siris-corporate-blue: #1c0e66;
+@font-size-small: 11px;
+@font-size-xsmall: 10px;
+
+
+a {
+	color: @color-siris-corporate-blue;
+	text-decoration: underline;
+}
+
+.header-bar {
+	border: none;
+	background-color: @color-siris-corporate-blue;
+	.navbar-brand {
+		font-family: 'Roboto', Arial;
+		font-size: 24px;
+		font-weight: 300;
+		color: white;
+		&:hover {
+			color: white;
+		}
+	}	
+}
+
+.navbar-nav.navbar-right:last-child {
+	margin-right: 0px; 
+}
+
+.navbar-nav.lab-logo {
+	margin: 10px 0;
+	img {
+		height: 30px
+		}
+}
+
+.parallel-wrapper {
+	margin-top: 20px;
+}
+
+.footer {
+	font-family: 'Roboto', Arial;
+	font-size: @font-size-small;
+
+	img.git-mark {
+		width: 24px;
+		height: 24px;
+		margin-left: 10px;
+		opacity: 0.5;
+	}
+}

@@ -21,14 +21,38 @@ angular.module('arwuApp')
           draw();
         })
 
-        var name = "Institution"
+        //listen for outside events to highligh/unhighlight nodes
+        scope.$root.$on('modifyNode', function(event, data)
+        {
+          console.log("modify node", data.action);
 
+          // highlighted the corresponding element given a datum
+          if(data.action == 'highlight')
+          {
+            var selectedElement = foreground.filter(function(d) 
+            {
+              return d[scope.name] == data.node[scope.name];
+            })          
+            highlightLine(selectedElement.node());
+          }              
+          else
+          {
+            foreground.style("stroke", "steelblue");
+            d3.selectAll(".circleText")
+                  .attr("display", "none");
+
+            svg.selectAll(".compareground")
+                    .selectAll("path")
+                    .style('visibility', 'hidden'); 
+          }
+        });
+/*
         // highlighted the corresponding element given a datum
         scope.highlightParallel = function(hoveredElelemnt) {          
           // console.log(scope.name_field_name)
           // console.log(hoveredElelemnt[scope.name_field_name])
           var selectedElement = foreground.filter(function(d) {
-            return d[name] == hoveredElelemnt[name];
+            return d[scope.name] == hoveredElelemnt[name];
           })
           
           highlightLine(selectedElement.node());
@@ -43,7 +67,7 @@ angular.module('arwuApp')
                   .selectAll("path")
                   .style('visibility', 'hidden'); 
         }
-
+*/
         scope.clearBrushes = function() {
           // console.log("Clear brushes")
           var actives = getActiveDimensions();
@@ -154,7 +178,7 @@ angular.module('arwuApp')
           foreground = svg.append("svg:g")
               .attr("class", "foreground")
             .selectAll("path")
-              .data(data, function(d) { return d[name]; })
+              .data(data, function(d) { return d[scope.name]; })
             .enter().append("svg:path")
               .attr("d", path)
               .attr("stroke-width", strokeWidth + 'px')
@@ -323,7 +347,7 @@ angular.module('arwuApp')
 
         function filterByName() {  
           foreground.style("display", function(d) {
-            d.filter_name = d[name].toLowerCase().indexOf(filterText) > -1;
+            d.filter_name = d[scope.name].toLowerCase().indexOf(filterText) > -1;
 
             return (d.filter_country && d.filter_brush  && d.filter_name) ? null : "none";
           });
