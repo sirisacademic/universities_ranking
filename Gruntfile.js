@@ -161,7 +161,7 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/styles/fonts/*',
-            '<%= yeoman.dist %>/data/{,*/}*.{csv,txt,json}'
+            //'<%= yeoman.dist %>/data/{,*/}*.{csv,txt,json}'
           ]
         }
       }
@@ -288,7 +288,8 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'fonts/*',
-            'data/{,*}*.{csv}'
+            'data/*'
+//            'data/{,*}*.{csv}'
           ]
         }, {
           expand: true,
@@ -353,6 +354,19 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+
+    'ftp-deploy': {
+      build: {
+        auth: {
+          host: 'www145.your-server.de',
+          port: 21,
+          authKey: 'key1'
+        },
+        src: 'dist/',
+        dest: 'public_html/deploymentlab/',
+        exclusions: ['dist/**/.DS_Store', 'dist/**/Thumbs.db', 'dist/tmp']
+      }
     }
   });
 
@@ -407,4 +421,9 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('deploy',[
+    'build',
+    'ftp-deploy'
+    ]);
 };
