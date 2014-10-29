@@ -419,18 +419,18 @@ angular.module('arwuApp')
             });
 
           // retrieve values from last year
-          var old_values = scope.old_data.filter(function(p) {
+          /*var old_values = scope.old_data.filter(function(p) {
             return p.Institution == d.Institution;
           })
           console.log(old_values)
-
+          */
           // show last year's line
-          svg.selectAll(".compareground")
+          /*svg.selectAll(".compareground")
             .data(old_values)
             .append("svg:path")
               .attr("d", path)
               .attr('stroke-dasharray', '2,3')
-              .style('visibility', 'visible');
+              .style('visibility', 'visible');*/
         }
       }
     };

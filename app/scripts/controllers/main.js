@@ -4,7 +4,7 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, $http, data, $StringUtils) {    
 
      //setup some global constants
-    $scope.$root.TABLE_COLUMN_RANK20142015 = "Rank 2014-15";
+    $scope.$root.TABLE_COLUMN_RANK20142015 = "Rank 2013-14";
     $scope.$root.TABLE_COLUMN_INSTITUTION = "Institution";
     $scope.$root.TABLE_COLUMN_COUNTRY = "Country";
     $scope.$root.TABLE_COLUMN_TEACHING = "Teaching";
