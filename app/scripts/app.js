@@ -14,7 +14,7 @@ angular
         controller: 'MainCtrl',
         resolve: {
           data: ['$http', function($http) {
-            return $http.get('data/arwu_2014_top-100.csv').then(function(response) {
+            return $http.get('data/arwu_2013_top-100.csv').then(function(response) {
               // console.log(response.data)
               return d3.csv.parse(response.data);
             })
