@@ -8,8 +8,10 @@
 <div class="container">
 
   <div class="instructions">
-     <p>Each line on the visualization represents a University while axes represent different metrics according to <a href="http://www.timeshighereducation.co.uk/world-university-rankings/2013-14/world-ranking">THE Ranking 2013-1014</a>. Drag the mouse through any of the axes to get a list of the institutions that match the filter. Use as many filters as you want!!
+    <p>Each line on the visualization represents a University while axes represent different metrics according to the <a href="http://www.shanghairanking.com/ARWU2014.html">ARWU Ranking</a>. Drag the mouse through any of the axes to get a list of the institutions that match the filter. Use as many filters as you want!!
+    </p>
   </div>
+
   <div class="row">
     
     <div class="col-xs-4"> 
@@ -44,9 +46,6 @@
   <div class="row parallel-wrapper" >  
     <parallel></parallel>
   </div>
-  <div style="padding:5px 0 15px 80px">
-    <img src="images/chart-parallel-legend.png">
-  </div>
 
   <div class="row">  
     <div class="panel-heading" id="numResults"></div>    
@@ -58,7 +57,7 @@
   </div-->
 
   <div class="container row">
-      <tableview table_data="table_data" first-column-size="22" margin="margin" columns-properties="$root.COLUMN_PROPERTIES">
+      <tableview table_data="table_data" first-column-size="22" margin="margin" columns-properties="$root.COLUMN_PROPERTIES" color-direction="'desc'">
       </tableview>
   </div>
 

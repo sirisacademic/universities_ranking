@@ -4,34 +4,32 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, $http, data, $StringUtils) {    
 
      //setup some global constants
-    $scope.$root.TABLE_COLUMN_RANK20142015 = "Rank 2013-14";
+     $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
+
+    $scope.$root.TABLE_COLUMN_WORLDRANK = "World Rank";
     $scope.$root.TABLE_COLUMN_INSTITUTION = "Institution";
     $scope.$root.TABLE_COLUMN_COUNTRY = "Country";
-    $scope.$root.TABLE_COLUMN_TEACHING = "Teaching";
-    $scope.$root.TABLE_COLUMN_RESEARCH = "Research";
-    $scope.$root.TABLE_COLUMN_CITATIONS = "Citations";
-    $scope.$root.TABLE_COLUMN_IND_INCOME = "Ind. Income";
-    $scope.$root.TABLE_COLUMN_IND_OUTLOOK = "Int. Outlook";
-    $scope.$root.TABLE_COLUMN_OVERALLSCORE = "Overall Score";
-
+    $scope.$root.TABLE_COLUMN_NATRANK = "Nat. Rank";
+    $scope.$root.TABLE_COLUMN_ALUMNI = "Alumni";
+    $scope.$root.TABLE_COLUMN_AWARD = "Award";
+    $scope.$root.TABLE_COLUMN_HICI = "HiCi";
+    $scope.$root.TABLE_COLUMN_NS = "N&S";
+    $scope.$root.TABLE_COLUMN_PUB = "PUB";
+    $scope.$root.TABLE_COLUMN_PCP = "PCP";
+    $scope.$root.TABLE_COLUMN_TOTALSCORE = "Total Score";
 
     $scope.$root.COLUMN_PROPERTIES = new ColumnsProperties();    
-    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_RANK20142015,0, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_WORLDRANK,0, 7, "center"));
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_INSTITUTION,0, 22, "left"));
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_COUNTRY,0, undefined, "center"));
-    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_TEACHING,1, undefined, "center"));
-    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_RESEARCH,1, undefined, "center"));
-    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_CITATIONS,1, undefined, "center"));
-    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_IND_OUTLOOK,1, undefined, "center"));
-    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_OVERALLSCORE,1, undefined, "center"));
-    
-    // Extract the list of scope.dimensions and create a scale for each.
-    // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
-    $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
-
-    $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
-      $scope.old_data = d3.csv.parse(response.data);
-    });
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_NATRANK,0, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_ALUMNI,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_AWARD,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_HICI,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_NS,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_PUB,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_PCP,1, undefined, "center"));
+    $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_TOTALSCORE,1, 9, "center"));
 
     data.forEach(function(d) {
       d.filter_country = true;
