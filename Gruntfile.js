@@ -25,6 +25,22 @@ module.exports = function (grunt) {
       dist: 'dist'
     },
 
+    /////////////////////////////////////////////////////////////////////////////////
+    // Grunt task to generate index.html from a template
+    // @see https://github.com/mathiasbynens/grunt-template    
+    'template': {
+      'process-html-template': {
+          'options': {
+              'data': {
+                  'now': grunt.template.today('mmmm dd, yyyy')
+              }
+          },
+          'files': {
+              '<%= yeoman.dist %>/index.html': ['<%= yeoman.dist %>/index.html']
+          }
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -364,7 +380,7 @@ module.exports = function (grunt) {
           authKey: 'key1'
         },
         src: 'dist/',
-        dest: 'public_html/deploymentlab/',
+        dest: 'public_html/deploymentlab/rankings/arwu/2013',
         exclusions: ['dist/**/.DS_Store', 'dist/**/Thumbs.db', 'dist/tmp']
       }
     }
@@ -413,7 +429,8 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'template'
   ]);
 
   grunt.registerTask('default', [
