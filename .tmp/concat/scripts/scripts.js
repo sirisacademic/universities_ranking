@@ -475,7 +475,8 @@ ColumnsProperties.prototype.getIndexOfColumnWithPercentage = function () {
 'use strict';
 angular.module('sirislab.siris-tableview', ['sirislab.siris-browserService']).directive('tableview', [
   '$browserService',
-  function ($browserService) {
+  '$timeout',
+  function ($browserService, $timeout) {
     return {
       template: '<div id="directive-tableview">' + '  <div id="tablewrapper">' + '    <table class="table" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:0">' + '      <thead>' + '        <tr></tr>' + '      </thead>' + '    </table>' + '    <div id="tablediv">' + '      <table class="table-condensed">' + '        <tbody>' + '        </tbody>' + '      </table>' + '    <div>' + '  </div>' + '</div>',
       restrict: 'E',
@@ -484,122 +485,140 @@ angular.module('sirislab.siris-tableview', ['sirislab.siris-browserService']).di
         'margin': '=',
         'width': '=?',
         'firstColumnSize': '=?',
-        'columnsProperties': '='
+        'columnsProperties': '=',
+        'colorDirection': '=?'
       },
-      link: function postLink(scope, element, attrs) {
-        //set of color domain, one for each column
-        var colorScales = [];
-        //index of the current sorted column
-        var indexSortableColumn = NaN;
-        //check if there is a column with a fix width percentage. If there isn't any, set the first
-        //column with a default width percentage of 50%
-        var indexColumnWithPercentage = scope.columnsProperties.getIndexOfColumnWithPercentage();
-        if (indexColumnWithPercentage == -1) {
-          indexColumnWithPercentage = 0;
-          scope.columnsProperties.columns[indexColumnWithPercentage].widthPercentage = 50;
-        }
-        //watch for changes on the data to be displayed
-        scope.$watch('tableData', function () {
-          if (scope.tableData && scope.tableData.length > 0) {
-            d3.select('#tablediv').style('visibility', 'visible');
-            //generate a color scale and domain for each column
-            scope.columnsProperties.columns.forEach(function (columnProperty) {
-              colorScales.push(d3.scale.linear().range([
-                'white',
-                '#7BBF6A'
-              ]));
-              colorScales[colorScales.length - 1].domain(d3.extent(scope.tableData, function (d, i) {
-                return +d[columnProperty.header];
-              }));
+      link: function (scope, element, attrs) {
+        $timeout(function () {
+          //set of color domain, one for each column
+          var colorScales = [];
+          //index of the current sorted column
+          var indexSortableColumn = NaN;
+          //check if there is a column with a fix width percentage. If there isn't any, set the first
+          //column with a default width percentage of 50%
+          var indexColumnWithPercentage = scope.columnsProperties.getIndexOfColumnWithPercentage();
+          if (indexColumnWithPercentage == -1) {
+            indexColumnWithPercentage = 0;
+            scope.columnsProperties.columns[indexColumnWithPercentage].widthPercentage = 50;
+          }
+          //watch for changes on the data to be displayed
+          scope.$watch('tableData', function () {
+            if (scope.tableData && scope.tableData.length > 0) {
+              d3.select('#tablediv').style('visibility', 'visible');
+              //generate a color scale and domain for each column
+              scope.columnsProperties.columns.forEach(function (columnProperty) {
+                console.log('****', scope.colorDirection);
+                colorScales.push(d3.scale.linear().range(scope.colorDirection == 'desc' ? [
+                  'white',
+                  '#7BBF6A'
+                ] : [
+                  '#7BBF6A',
+                  'white'
+                ]));
+                colorScales[colorScales.length - 1].domain(d3.extent(scope.tableData, function (d, i) {
+                  return +d[columnProperty.header];
+                }));
+              });
+              draw();
+            }
+          }, true);
+          //set size
+          d3.select('#tablewrapper').style('width', scope.width == undefined ? '100%' : scope.width + 'px');
+          //generate header and interactivity for sorting
+          var headers = scope.columnsProperties.columns.map(function (columnProperty) {
+              return columnProperty.header;
+            });
+          //once the #tablewrapper has a width, now we can set a scope.width value          
+          scope.width = d3.select('#tablewrapper')[0][0].offsetWidth;
+          //now compute the width of all the columns that have a % assigned for its width. This let's us know available space for the rest of the columns
+          var sizeColumnsWithPercentage = 0;
+          scope.columnsProperties.columns.forEach(function (columnProperty) {
+            if (columnProperty.widthPercentage != undefined)
+              sizeColumnsWithPercentage += Math.round(scope.width * columnProperty.widthPercentage / 100);
+          });
+          d3.selectAll('thead tr').selectAll('th').data(headers).enter().append('th').style('width', function (d, i) {
+            //variable column sizes to % if needed, others size proportionally
+            if (scope.columnsProperties.columns[i].widthPercentage != undefined)
+              return Math.round(scope.width * scope.columnsProperties.columns[i].widthPercentage / 100) + 'px';
+            else
+              return (scope.width - sizeColumnsWithPercentage) / (scope.columnsProperties.columns.length - 1) + 'px';
+          }).style('border', '1').style('text-align', 'left').style('background-color', '#eeeeee').classed('tableview-sortable', function (d, i) {
+            return scope.columnsProperties.columns[i].isSortable != 0;
+          }).text(function (d) {
+            return d;
+          }).on('mouseover', function (d, i) {
+            d3.select(this).style('cursor', 'hand');
+          }).on('click', function (d, i) {
+            if (scope.columnsProperties.columns[i].isSortable == 0)
+              return;
+            //check if we already have a sortable column, if so remove classes for the previous and update state for the new one 
+            if (!isNaN(indexSortableColumn)) {
+              d3.selectAll('thead tr').selectAll('th').classed('tablesort-asc tablesort-desc', false);
+            }
+            indexSortableColumn = i;
+            scope.columnsProperties.columns[i].isSortable = scope.columnsProperties.columns[i].isSortable * -1;
+            d3.select(this).classed('tablesort-asc', function (d, j) {
+              return scope.columnsProperties.columns[i].isSortable == 1;
+            });
+            d3.select(this).classed('tablesort-desc', function (d, j) {
+              return scope.columnsProperties.columns[i].isSortable == -1;
+            });
+            scope.tableData.sort(function (a, b) {
+              if (i == 0)
+                return a[d] < b[d] ? -1 * scope.columnsProperties.columns[i].isSortable : 1 * scope.columnsProperties.columns[i].isSortable;
+              return (a[d] - b[d]) * scope.columnsProperties.columns[i].isSortable;
             });
             draw();
-          }
-        }, true);
-        //set size
-        d3.select('#tablewrapper').style('width', scope.width == undefined ? '100%' : scope.width + 'px');
-        //generate header and interactivity for sorting
-        var headers = scope.columnsProperties.columns.map(function (columnProperty) {
-            return columnProperty.header;
           });
-        //once the #tablewrapper has a width, now we can set a scope.width value
-        scope.width = d3.select('#tablewrapper')[0][0].offsetWidth;
-        //now we can checkwidth for the column with the width percentage
-        var sizeColumnWithPercentage = Math.round(scope.width * scope.columnsProperties.columns[indexColumnWithPercentage].widthPercentage / 100);
-        d3.selectAll('thead tr').selectAll('th').data(headers).enter().append('th').style('width', function (d, i) {
-          //variable column sizes to % if needed, others size proportionally
-          return i == indexColumnWithPercentage ? sizeColumnWithPercentage + 'px' : (scope.width - sizeColumnWithPercentage) / (scope.columnsProperties.columns.length - 1) + 'px';
-        }).style('border', '1').style('text-align', 'center').style('background-color', '#eeeeee').classed('tableview-sortable', function (d, i) {
-          return scope.columnsProperties.columns[i].isSortable != 0;
-        }).text(function (d) {
-          return d;
-        }).on('mouseover', function (d, i) {
-          d3.select(this).style('cursor', 'hand');
-        }).on('click', function (d, i) {
-          if (scope.columnsProperties.columns[i].isSortable == 0)
-            return;
-          //check if we already have a sortable column, if so remove classes for the previous and update state for the new one 
-          if (!isNaN(indexSortableColumn)) {
-            d3.selectAll('thead tr').selectAll('th').classed('tablesort-asc tablesort-desc', false);
-          }
-          indexSortableColumn = i;
-          scope.columnsProperties.columns[i].isSortable = scope.columnsProperties.columns[i].isSortable * -1;
-          d3.select(this).classed('tablesort-asc', function (d, j) {
-            return scope.columnsProperties.columns[i].isSortable == 1;
-          });
-          d3.select(this).classed('tablesort-desc', function (d, j) {
-            return scope.columnsProperties.columns[i].isSortable == -1;
-          });
-          scope.tableData.sort(function (a, b) {
-            if (i == 0)
-              return a[d] < b[d] ? -1 * scope.columnsProperties.columns[i].isSortable : 1 * scope.columnsProperties.columns[i].isSortable;
-            return (a[d] - b[d]) * scope.columnsProperties.columns[i].isSortable;
-          });
-          draw();
-        });
-        d3.selectAll('#tablewrapper table').style('width', scope.width + 'px');
-        function draw() {
-          d3.select('tbody').selectAll('tr').remove();
-          var rows = d3.select('tbody').selectAll('tr').data(scope.tableData).enter().append('tr').style('background-color', function (d, i) {
-              if (i % 2 == 1)
-                return '#F0F0F0';
-            }).on('mouseover', function (d) {
-              this.__rowBgColor = d3.select(this).style('background-color');
-              d3.select(this).style('background-color', '#E0E0E0').style('outline', 'rgb(136, 136, 136) solid thin');
-              //emit event in case anyone is listening outside there
-              scope.$root.$emit('modifyNode', {
-                'node': d,
-                'action': 'highlight'
+          d3.selectAll('#tablewrapper table').style('width', scope.width + 'px');
+          function draw() {
+            d3.select('tbody').selectAll('tr').remove();
+            var rows = d3.select('tbody').selectAll('tr').data(scope.tableData).enter().append('tr').style('background-color', function (d, i) {
+                if (i % 2 == 1)
+                  return '#F0F0F0';
+              }).on('mouseover', function (d) {
+                this.__rowBgColor = d3.select(this).style('background-color');
+                d3.select(this).style('background-color', '#E0E0E0').style('outline', 'rgb(136, 136, 136) solid thin');
+                //emit event in case anyone is listening outside there
+                scope.$root.$emit('modifyNode', {
+                  'node': d,
+                  'action': 'highlight'
+                });
+              }).on('mouseout', function (d) {
+                d3.select(this).style('background-color', this.__rowBgColor).style('outline', '');
+                //emit event in case anyone is listening outside there
+                scope.$root.$emit('modifyNode', {
+                  'node': d,
+                  'action': 'unhighlight'
+                });
               });
-            }).on('mouseout', function (d) {
-              d3.select(this).style('background-color', this.__rowBgColor).style('outline', '');
-              //emit event in case anyone is listening outside there
-              scope.$root.$emit('modifyNode', {
-                'node': d,
-                'action': 'unhighlight'
+            rows.selectAll('td').data(function (d, i) {
+              var array = [];
+              scope.columnsProperties.columns.forEach(function (p) {
+                array.push(d[p.header]);
               });
+              return array;
+            }).enter().append('td').style('background-color', function (d, i) {
+              //set color scales if the column is sortable
+              if (scope.columnsProperties.columns[i].isSortable)
+                return colorScales[i](d);
+            }).style('width', calcColumnWidth).style('text-align', function (d, i) {
+              return scope.columnsProperties.columns[i].textAlign;
+            }).text(function (d, i) {
+              return d;
             });
-          rows.selectAll('td').data(function (d, i) {
-            var array = [];
-            scope.columnsProperties.columns.forEach(function (p) {
-              array.push(d[p.header]);
-            });
-            return array;
-          }).enter().append('td').style('background-color', function (d, i) {
-            //set color scales if the column is sortable and sorting is active (a column has been sorted)
-            if (scope.columnsProperties.columns[i].isSortable != 0 && !isNaN(indexSortableColumn))
-              return colorScales[i](d);
-          }).style('width', calcColumnWidth).style('text-align', function (d, i) {
-            return scope.columnsProperties.columns[i].textAlign;
-          }).text(function (d, i) {
-            return d;
-          });
-          function calcColumnWidth(d, i) {
-            var offset = $browserService.isFirefox() ? 16 : 0;
-            //variable column sizes to % if needed, others size proportionally
-            return i == indexColumnWithPercentage ? sizeColumnWithPercentage + 'px' : i == scope.columnsProperties.columns.length - 1 ? (scope.width - sizeColumnWithPercentage) / (scope.columnsProperties.columns.length - 1) - offset + 'px' : (scope.width - sizeColumnWithPercentage) / (scope.columnsProperties.columns.length - 1) + 'px';
+            function calcColumnWidth(d, i) {
+              var offset = $browserService.isFirefox() ? 16 : 0;
+              if (scope.columnsProperties.columns[i].widthPercentage != undefined)
+                return Math.round(scope.width * scope.columnsProperties.columns[i].widthPercentage / 100) + 'px';
+              else if (i == scope.columnsProperties.columns.length - 1)
+                return (scope.width - sizeColumnsWithPercentage) / (scope.columnsProperties.columns.length - 1) - offset + 'px';
+              else
+                return (scope.width - sizeColumnsWithPercentage) / (scope.columnsProperties.columns.length - 1) + 'px';
+            }
           }
-        }
-      }
+        }, 200);
+      }  // end link function
     };
   }
 ]);
