@@ -84,7 +84,7 @@ angular.module('arwuApp')
 
    
     
-$scope.filtered;
+    $scope.filtered;
     $scope.countries = [];
     $scope.selectedCountry = "All Countries";
 
