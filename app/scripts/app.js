@@ -4,6 +4,7 @@ angular
   .module('arwuApp', [
     'sirislab.siris-tableview',
     'sirislab.siris-stringUtils',
+    'sirislab.siris-parallel',
     'ngResource',
     'ngRoute'
   ])

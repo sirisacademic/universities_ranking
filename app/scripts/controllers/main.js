@@ -25,9 +25,6 @@ angular.module('arwuApp')
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_IND_OUTLOOK,1, undefined, "center"));
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_OVERALLSCORE,1, undefined, "center"));
     
-    // Extract the list of scope.dimensions and create a scale for each.
-    // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
-    $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
 
     $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
       $scope.old_data = d3.csv.parse(response.data);
@@ -63,32 +60,97 @@ angular.module('arwuApp')
         });
     }
 
-    // Set proper margins, width and height
+    // Set proper margins, width and height and parallel coordinate
     $scope.margin = { top: 30, right: 0, bottom: 10, left: 0 };
     $scope.width = 960 - $scope.margin.left - $scope.margin.right;
     $scope.height = 420 - $scope.margin.top - $scope.margin.bottom;
-    $scope.country_field_name = "Country",
-    $scope.name               = "Institution"
+    $scope.country_field_name = "Country";
+    $scope.name               = "Institution";
+    $scope.tooltip_fields = [$scope.name, $scope.country_field_name];
+    $scope.parallelproperties = {
+      lineProperties:
+      {
+        curvedPath: false,
+        fgColor: 'steelblue'  //color for the foreground lines
+      },
+      draggableAxis:false,
+      axisDirection: 'desc', //direction of the color scale: asc (0, bottom - 100, top), desc (100, bottom - 0, top)
+      yDomain:[0, 100]    //[bottom, top] (cartesian axis)
+    }
 
-    // elements are sorted according their position in the ranking in 2014. If they are not on 2014's ranking, they are sorted according their sum of ranks along the rest of the years
-    // data.sort(function(a, b) {
-    //   var aValue, bValue;
-    //   if (a.data['2014'] == undefined && b.data['2014'] == undefined) {
-    //     aValue = bValue = 0;
-    //     $scope.dimensions.forEach(function(d) {
-    //       aValue += (a.data[d] == undefined) ? 1000 : a.data[d][$scope.rankingMetric];
-    //       bValue += (b.data[d] == undefined) ? 1000 : b.data[d][$scope.rankingMetric];
-    //     })
-    //   } else {
-    //     aValue = (a.data['2014'] == undefined) ? 101 : a.data['2014'][$scope.rankingMetric];
-    //     bValue = (b.data['2014'] == undefined) ? 101 : b.data['2014'][$scope.rankingMetric];
-    //   }
-    //   return aValue - bValue;
-    // })    
+    // Extract the list of scope.dimensions and create a scale for each.
+    // $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
+    $scope.dimensions = ['Teaching', 'Research', 'Citations', 'Ind. Income', 'Int. Outlook', 'Overall Score'];
+
+   
     
+$scope.filtered;
+    $scope.countries = [];
+    $scope.selectedCountry = "All Countries";
+
+    //get all the countries from the data
+    $scope.countries = d3.set(data.map(function(d) 
+      { 
+        return d[$scope.country_field_name]; 
+      })).values();
+
+    //set the countries as model for the countriesCombo
+    d3.select("#countriesCombo")      
+      .selectAll("option")
+      .data($scope.countries.sort())
+      .enter()
+        .append("li")              
+        .append("a")
+          // .attr("href", function() { return ''; })
+          .attr("value", function(d) { return d;})
+          .text(function(d) { return d;});    
+
+    d3.select("#countriesCombo")
+      .selectAll("li")
+        .on("click", function(d) {
+          $scope.selectedCountry = d3.select(this).selectAll("a").text().trim()
+          d3.select("#countriesButton").text($scope.selectedCountry);
+          $scope.selectedCountry = $scope.selectedCountry;
+
+          //send event of filterByCountry
+          $scope.$root.$broadcast('filterByCountry', $scope.selectedCountry);
+
+          //refresh the table with the filtered data
+          $scope.update_table_data(
+              ($scope.selectedCountry == "All Countries")? data : data.filter(function(d)
+              {
+                return d[$scope.country_field_name] == $scope.selectedCountry;
+              })
+            );
+        })
+
+    //enable filtering by name
+    d3.select("#input_school")
+      .on("keyup", function(d) {
+        if(this.value == undefined)
+          return;
+
+        var filterText = this.value;
+        
+        //send event of filterByName
+        $scope.$root.$broadcast('filterByName', filterText.toLowerCase());
+
+        //refresh the table with the filtered data
+          $scope.update_table_data(
+              (filterText.length == 0)? data : data.filter(function(d)
+              {
+                return (d[$scope.name].toLowerCase().indexOf(filterText.toLowerCase()) > -1);
+              })
+            );
+      })
 
 
-    //filter data for the table, just the necessary columns
+    /////////////
+    // function that prepares the data to be consumed by the table
+    // called everytime the data is updated (p.ex, filtered)
+    $scope.update_table_data = function(theData)
+    {
+      //filter data for the table, just the necessary columns
       var cloneWithProps = function(object, keys)
       {
         var newObject = {};
@@ -99,16 +161,24 @@ angular.module('arwuApp')
         return newObject;
       }
 
-      $scope.table_data = data.map( function(node)
-        {
-          //the headers used for the table will be the properties to extract from the objects in the data
-          return cloneWithProps(node, $scope.$root.COLUMN_PROPERTIES.columns.map(
-              function(columnProperty)
-              {
-                return columnProperty.header;
-              }
-            ));
-        });
+      $scope.table_data = theData.map( function(node)
+      {
+        //the headers used for the table will be the properties to extract from the objects in the data
+        return cloneWithProps(node, $scope.$root.COLUMN_PROPERTIES.columns.map(
+            function(columnProperty)
+            {
+              return columnProperty.header;
+            }
+          ));
+      });  
+
+      if(!$scope.$$phase) 
+        $scope.$apply();
+    }
+
+    $scope.update_table_data(data);
+
+
 
 
 

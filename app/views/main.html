@@ -43,8 +43,9 @@
     </div>
   </div>
   <div class="row parallel-wrapper" >  
-    <parallel></parallel>
+    <parallel data='data' dimensions="dimensions" height="height" width="width" margin="margin" institutionfieldname="name" countryfieldname="country_field_name" tooltipfields="tooltip_fields" parallelproperties="parallelproperties"></parallel>
   </div>
+
   <div style="padding:5px 0 15px 80px">
     <img src="images/chart-parallel-legend.png">
   </div>
@@ -59,7 +60,7 @@
   </div-->
 
   <div class="container row">
-      <tableview table_data="table_data" first-column-size="22" margin="margin" columns-properties="$root.COLUMN_PROPERTIES">
+      <tableview table_data="table_data" first-column-size="22" margin="margin" columns-properties="$root.COLUMN_PROPERTIES" color-direction="'desc'">
       </tableview>
   </div>
 
