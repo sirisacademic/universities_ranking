@@ -30,6 +30,13 @@ angular.module('arwuApp')
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_PUB,1, undefined, "center"));
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_PCP,1, undefined, "center"));
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_TOTALSCORE,1, 9, "center"));
+    
+    $scope.parallelproperties = {
+      axisDirection: 'desc', //direction of the color scale: asc (0, bottom - 100, top), desc (100, bottom - 0, top)
+      lineProperties: {
+        strokeWith : 1
+      }
+    }
 
     data.forEach(function(d) {
       d.filter_country = true;
@@ -67,22 +74,7 @@ angular.module('arwuApp')
     $scope.height = 420 - $scope.margin.top - $scope.margin.bottom;
     $scope.country_field_name = "Country",
     $scope.name               = "Institution"
-
-    // elements are sorted according their position in the ranking in 2014. If they are not on 2014's ranking, they are sorted according their sum of ranks along the rest of the years
-    // data.sort(function(a, b) {
-    //   var aValue, bValue;
-    //   if (a.data['2014'] == undefined && b.data['2014'] == undefined) {
-    //     aValue = bValue = 0;
-    //     $scope.dimensions.forEach(function(d) {
-    //       aValue += (a.data[d] == undefined) ? 1000 : a.data[d][$scope.rankingMetric];
-    //       bValue += (b.data[d] == undefined) ? 1000 : b.data[d][$scope.rankingMetric];
-    //     })
-    //   } else {
-    //     aValue = (a.data['2014'] == undefined) ? 101 : a.data['2014'][$scope.rankingMetric];
-    //     bValue = (b.data['2014'] == undefined) ? 101 : b.data['2014'][$scope.rankingMetric];
-    //   }
-    //   return aValue - bValue;
-    // })    
+    $scope.tooltip_fields = [$scope.$root.TABLE_COLUMN_INSTITUTION];
     
 
 

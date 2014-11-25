@@ -1,0 +1,253 @@
+/* Space out content a bit */
+
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* Make the masthead heading the same height as the navigation */
+
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+
+.marketing {
+  margin: 40px 0;
+}
+
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+
+@media screen and (min-width: 960px) {
+  /* Remove the padding we set earlier */
+
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Space out the masthead */
+
+  .header {
+    margin-bottom: 30px;
+  }
+
+  /* Remove the bottom border on the jumbotron for visual effect */
+
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.background path {
+  fill: none;
+  stroke: #ccc;
+  stroke-opacity: .4;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  /*stroke: steelblue;*/
+  stroke-opacity: .7;
+}
+
+.active {
+  fill: none;
+  stroke: red;
+  stroke-opacity: .7;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #ccc;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  text-shadow: 0 1px 0 #fff;
+  cursor: move;
+}
+
+#tooltip {
+  border: 1px solid #e0e0e0;
+  padding: 5px 4px;
+  background-color: "#ffffff";
+  position: absolute;
+}
+
+#logo {
+  width: 100px;
+  height: 62px;
+  margin-top: 13px;
+  float: right;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: steelblue;
+}
+
+body {
+  font: 12px sans-serif;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1px;
+}
+
+.linepath {
+  fill: none;
+  stroke: #87907D;
+  stroke-width: 1.25px;
+}
+
+/**** Bootstrap patches *******/
+
+.nav,
+.pagination,
+.carousel a {
+  cursor: pointer;
+}
+
+a {
+  cursor: pointer;
+}
+
+.btn-gray {
+  background-color: #ebebeb;
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 400px;
+  overflow-x: hidden;
+}
+
+.dropdown-menu a {
+  font: 12px sans-serif;
+}
+
+.highlighted-row tr {
+  border: 1px solid black;
+}
+
+/*** TABLE STYLING ***/
+
+table {
+  /*padding-bottom: 30px;*/
+  font-size: 11px;
+  color: #111;
+  table-layout: fixed;
+  margin-bottom: 0px;
+  /*border: solid 1px #bbb; */
+  border-collapse: collapse;
+}
+
+th {
+  cursor: hand;
+  border: solid 1px #bbb;
+}
+
+tr {
+  line-height: 25px;
+  min-height: 25px;
+  height: 25px;
+}
+
+td {
+  padding: 5px;
+}
+
+#tablewapper {
+  padding-top: 10px;
+}
+
+#tablediv {
+  /*padding-top: 10px;*/
+  height: 300px;
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.compareground path {
+  fill: none;
+  stroke: black;
+  stroke-width: 2;
+  stroke-opacity: .7;
+}
+
+.instructions {
+  margin-bottom: 25px;
+}
