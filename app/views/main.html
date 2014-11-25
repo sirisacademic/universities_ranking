@@ -8,7 +8,7 @@
 <div class="container">
 
   <div class="instructions">
-    <p>Each line on the visualization represents a University while axes represent different metrics according to <a href="http://www.timeshighereducation.co.uk/world-university-rankings/2014-15/world-ranking">THE Ranking 2014-1015</a>. Drag the mouse through any of the axes to get a list of the institutions that match the filter. Use as many filters as you want!!
+    <p>Each line on the visualization represents a University while axes represent different metrics according to <a href="http://www.timeshighereducation.co.uk/world-university-rankings/2014-15/world-ranking">THE Ranking 2014-2015</a>. Drag the mouse through any of the axes to get a list of the institutions that match the filter. Use as many filters as you want!!
     </p>
   </div>
   <div class="row">
@@ -43,11 +43,17 @@
     </div>
   </div>
   <div class="row parallel-wrapper" >  
-    <parallel></parallel>
+    <parallel data='data' dimensions="dimensions" height="height" width="width" margin="margin" institutionfieldname="name" countryfieldname="country_field_name" tooltipfields="tooltip_fields" parallelproperties="parallelproperties" olddata="old_data"></parallel>
   </div>
-  <div style="padding:5px 0 15px 80px">
-    <img src="images/chart-parallel-legend.png">
-  </div>
+  <svg width="500" height="50">
+    <g transform="translate(50, 10)">
+      <line x1="0" y1="10" x2="20" y2="10" stroke="#cc0000" stroke-width="1"/>
+       <text x="25" y="14" fill="black">Current year</text>
+
+       <line x1="100" y1="10" x2="120" y2="10" style="stroke: #000000; fill:none; stroke-width: 1px; stroke-dasharray: 2 2"/>
+       <text x="125" y="14" fill="black">Previous year</text>
+    </g>
+  </svg>
 
   <div class="row">  
     <div class="panel-heading" id="numResults"></div>    

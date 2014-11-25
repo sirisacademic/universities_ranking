@@ -10,7 +10,8 @@
     "angular-resource": "1.2.15",
     "angular-route": "1.2.15",
     "siris-tableview":"v0.0.2",
-    "siris-stringUtils":"0.0.1"
+    "siris-stringUtils":"0.0.1",
+    "siris-parallelcoordinates": "git@bitbucket.org:sirisanalytics/directives-parallelcoordinates.git"
   },
   "devDependencies": {
     "angular-mocks": "1.2.15",
