@@ -386,6 +386,7 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-ftp-deploy');
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
