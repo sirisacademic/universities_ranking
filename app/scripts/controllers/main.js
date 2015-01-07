@@ -4,7 +4,7 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, $http, data, $StringUtils) {    
 
      //setup some global constants
-     $scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
+     //$scope.dimensions = ['Alumni', 'Award', 'HiCi', 'N&S', 'PUB', 'PCP', 'Total Score'];
 
     $scope.$root.TABLE_COLUMN_WORLDRANK = "World Rank";
     $scope.$root.TABLE_COLUMN_INSTITUTION = "Institution";
@@ -36,6 +36,15 @@ $scope.parallelproperties = {
     }
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_PCP,1, undefined, "center"));
     $scope.$root.COLUMN_PROPERTIES.addColumnProperties(new ColumnProperties($scope.$root.TABLE_COLUMN_TOTALSCORE,1, 9, "center"));
+     $scope.dimensions = [
+	$scope.$root.TABLE_COLUMN_ALUMNI,
+	$scope.$root.TABLE_COLUMN_AWARD,
+	$scope.$root.TABLE_COLUMN_HICI,
+	$scope.$root.TABLE_COLUMN_NS,
+	$scope.$root.TABLE_COLUMN_PUB,
+	$scope.$root.TABLE_COLUMN_PCP,
+	$scope.$root.TABLE_COLUMN_TOTALSCORE
+     ];
 
     data.forEach(function(d) {
       d.filter_country = true;
@@ -45,17 +54,6 @@ $scope.parallelproperties = {
       // adding spaces to names 
       d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
       d.Country = d.Country.replace(/([a-z])([A-Z])/g, '$1 $2');
-
-      // console.dir(d)
-      // $scope.dimensions.forEach(function(p) {
-      //   if (p in d.data) {
-      //     yearData = d.data[p];
-      //     // research_doctorate_criteria (20) = FT research rank (10) + Faculty with doctorates (5) + FT doctoral rank (5)
-      //     yearData['research_doctorate_criteria'] = yearData['FT research rank'] + yearData['Faculty with doctorates (%)'] + yearData['FT doctoral rank'];
-      //     // international_criteria (20) = International mobility (6) + International faculty (4) + International students (4) + International experience index (3) + International board (2) + Languages (1)
-      //     yearData['international_criteria'] = yearData['International mobility index'] + yearData['International faculty (%)'] + yearData['International students (%)'] + yearData['International experience index'] + yearData['International board (%)'] + yearData['Languages'];
-      //   }
-      // })
     })
 
 
@@ -71,13 +69,108 @@ $scope.parallelproperties = {
     $scope.margin = { top: 30, right: 0, bottom: 10, left: 0 };
     $scope.width = 960 - $scope.margin.left - $scope.margin.right;
     $scope.height = 420 - $scope.margin.top - $scope.margin.bottom;
-    $scope.country_field_name = "Country",
-    $scope.name               = "Institution"
+    $scope.country_field_name = $scope.$root.TABLE_COLUMN_COUNTRY;
+    $scope.name               = $scope.$root.TABLE_COLUMN_INSTITUTION;
     $scope.tooltip_fields = [$scope.$root.TABLE_COLUMN_WORLDRANK, $scope.$root.TABLE_COLUMN_INSTITUTION];
     
 
+    ////////////////////////////////////////////////////////////////////////
+    /// FILTERING 
+    $scope.$FILTER_BY_COUNTRY = 0;
+    $scope.$FILTER_BY_TEXT = 1;
+    $scope.$FILTER_BY_BRUSH = 2;
+    $scope.filtered;
+    $scope.countries = [];
+    $scope.$FILTER_COUNTRY_ALL = "All Countries";
+    $scope.selectedCountry = $scope.$FILTER_COUNTRY_ALL;
+    $scope.filterText = "";
 
-    //filter data for the table, just the necessary columns
+    //get all the countries from the data
+    $scope.countries = d3.set(data.map(function(d) 
+      { 
+        return d[$scope.country_field_name]; 
+      })).values();
+
+    //listern for the filtering coming from parallel brushes
+    $scope.$on('onParallelBrushEvent', function(event, data)
+    {
+      updateDataFromFiltersValues($scope.$FILTER_BY_BRUSH, data);      
+    });
+
+
+    function updateDataFromFiltersValues(filterType, filterData)
+    {
+      data.forEach(function(d) 
+      {
+        //update filter flags on each datum of data
+        //country flag
+        if(filterType == $scope.$FILTER_BY_COUNTRY)
+          d.filter_country = ($scope.selectedCountry == $scope.$FILTER_COUNTRY_ALL)? 
+            true : (d[$scope.country_field_name] == $scope.selectedCountry);
+        
+        //text filter flag
+        else if(filterType == $scope.$FILTER_BY_TEXT)          
+          d.filter_name = ($scope.filterText == "")? 
+            true : (d[$scope.name].toLowerCase().indexOf($scope.filterText.toLowerCase()) > -1);
+        
+        //brush filter flag
+        else if(filterType == $scope.$FILTER_BY_BRUSH)
+        {
+          if (filterData.actives.length == 0)
+            d.filter_brush = true;
+          else
+            d.filter_brush = filterData.actives.every(function(p, i) {      
+              return filterData.extents[i][0] <= d[p] && d[p] <= filterData.extents[i][1];
+            });
+        }
+      });
+
+      //refresh the table with the filtered data
+      $scope.update_table_data(data);
+
+      //update results summary
+      var l = data.filter(function(d) 
+            { return d.filter_country && d.filter_brush && d.filter_name;
+            }).length;
+      d3.select("#numResults")
+        .text(l + " institutions match the criteria");
+    }
+
+    //set the countries as model for the countriesCombo
+    d3.select("#countriesCombo")      
+      .selectAll("option")
+      .data($scope.countries.sort())
+      .enter()
+        .append("li")              
+        .append("a")
+          .attr("value", function(d) { return d;})
+          .text(function(d) { return d;});    
+
+    d3.select("#countriesCombo")
+      .selectAll("li")
+        .on("click", function(d) {
+          $scope.selectedCountry = d3.select(this).selectAll("a").text().trim()
+          d3.select("#countriesButton").text($scope.selectedCountry);
+          $scope.selectedCountry = $scope.selectedCountry;
+          updateDataFromFiltersValues($scope.$FILTER_BY_COUNTRY);
+        })
+
+    //enable filtering by name
+    d3.select("#input_school")
+      .on("keyup", function(d) {
+        if(this.value == undefined)
+          return;
+        $scope.filterText = this.value;      
+        updateDataFromFiltersValues($scope.$FILTER_BY_TEXT);
+      })
+
+
+    /////////////
+    // function that prepares the data to be consumed by the table
+    // called everytime the data is updated (p.ex, filtered)
+    $scope.update_table_data = function(theData)
+    {
+      //filter data for the table, just the necessary columns
       var cloneWithProps = function(object, keys)
       {
         var newObject = {};
@@ -88,18 +181,28 @@ $scope.parallelproperties = {
         return newObject;
       }
 
-      $scope.table_data = data.map( function(node)
-        {
-          //the headers used for the table will be the properties to extract from the objects in the data
-          return cloneWithProps(node, $scope.$root.COLUMN_PROPERTIES.columns.map(
-              function(columnProperty)
-              {
-                return columnProperty.header;
-              }
-            ));
-        });
+      $scope.table_data = theData
+      .filter(function(d)
+      {
+        return d.filter_country && d.filter_brush && d.filter_name;
+      })
+      .map( function(node)
+      {
+        //the headers used for the table will be the properties to extract from the objects in the data
+        return cloneWithProps(node, $scope.$root.COLUMN_PROPERTIES.columns.map(
+            function(columnProperty)
+            {
+              return columnProperty.header;
+            }
+          ));
+      });  
 
+      if(!$scope.$$phase) 
+        $scope.$apply();
+    }
 
+    updateDataFromFiltersValues();
+    $scope.update_table_data(data);
 
     // saving the loaded data into the scope so the directives can draw it
     $scope.data = data;    
@@ -115,14 +218,10 @@ $scope.parallelproperties = {
     $scope.tooltip = d3.select("#tooltip")
             .style("visibility", "hidden")
             .style("background-color", "#ffffff");
-      
-    // d3.select('#tabbedpane')
-    //   .style("width", $scope.width - $scope.margin.left - $scope.margin.right - 30 + "px")
-    //   .style("margin-left", $scope.margin.left + 10 + "px");
+
 
     d3.select("#clearBrushesBtn")
       .on("click", function(d) {
-        // console.log("Click!!!")
         try {
           $scope.clearBrushes();
         } catch(err) {                    
