@@ -223,7 +223,7 @@ $scope.parallelproperties = {
     d3.select("#clearBrushesBtn")
       .on("click", function(d) {
         try {
-          $scope.clearBrushes();
+          $scope.$emit('clearBrushes');
         } catch(err) {                    
         } 
       });
