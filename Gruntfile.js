@@ -380,7 +380,7 @@ module.exports = function (grunt) {
           authKey: 'key1'
         },
         src: 'dist/',
-        dest: 'public_html/deploymentlab/rankings/arwu/2014',
+        dest: 'public_html/deploymentlab/rankings/arwu/2014/',
         exclusions: ['dist/**/.DS_Store', 'dist/**/Thumbs.db', 'dist/tmp']
       }
     }
@@ -435,8 +435,8 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
-    'test',
+    /*'newer:jshint',*/
+    /*'test',*/
     'build'
   ]);
 
