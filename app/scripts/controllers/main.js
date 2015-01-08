@@ -134,7 +134,7 @@ angular.module('arwuApp')
             { return d.filter_country && d.filter_brush && d.filter_name;
             }).length;
       d3.select("#numResults")
-        .text(l + " institutions match the criteria");
+        .text(l + " institutions (" + ((l / data.length)*100).toFixed(1) + "%) match the criteria");
     }
 
     //set the countries as model for the countriesCombo
