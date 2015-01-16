@@ -380,7 +380,7 @@ module.exports = function (grunt) {
           authKey: 'key1'
         },
         src: 'dist/',
-        dest: 'public_html/deploymentlab/rankings/the_ranking/2013-2014/',
+        dest: 'public_html/lab/rankings/the_ranking/2013-2014/',
         exclusions: ['dist/**/.DS_Store', 'dist/**/Thumbs.db', 'dist/tmp']
       }
     }
