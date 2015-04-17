@@ -46,6 +46,11 @@ $scope.parallelproperties = {
 	$scope.$root.TABLE_COLUMN_TOTALSCORE
      ];
 
+    $http.get('data/arwu_2013_top-100.csv').then(function(response)
+    {
+      $scope.old_data = d3.csv.parse(response.data);
+    });
+
     data.forEach(function(d) {
       d.filter_country = true;
       d.filter_brush = true;
