@@ -4,7 +4,7 @@ angular.module('arwuApp')
   .controller('MainCtrl', function ($scope, $compile, $http, data, $StringUtils) {    
 
      //setup some global constants
-    $scope.$root.TABLE_COLUMN_RANK20142015 = "Rank 2014-15";
+    $scope.$root.TABLE_COLUMN_RANK20142015 = "Rank 2015-16";
     $scope.$root.TABLE_COLUMN_INSTITUTION = "Institution";
     $scope.$root.TABLE_COLUMN_COUNTRY = "Country";
     $scope.$root.TABLE_COLUMN_TEACHING = "Teaching";
@@ -40,8 +40,13 @@ angular.module('arwuApp')
 	$scope.$root.TABLE_COLUMN_OVERALLSCORE
     ];
 
-    $http.get('data/the_ranking_2013-2014.csv').then(function(response) {
+    $http.get('data/the_ranking_2014-2015.csv').then(function(response) {
       $scope.old_data = d3.csv.parse(response.data);
+      $scope.old_data.forEach(function(d)
+      {
+        d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
+        d.Institution = d.Institution.replace('of', ' of');
+      });
     });
 
     data.forEach(function(d) {
@@ -50,7 +55,7 @@ angular.module('arwuApp')
       d.filter_name = true;
 
       // adding spaces to names 
-      d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');
+      d.Institution = d.Institution.replace(/([a-z])([A-Z])/g, '$1 $2');      
       d.Country = d.Country.replace(/([a-z])([A-Z])/g, '$1 $2');
     })
 
